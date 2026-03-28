@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Credit Card Fraud Detection</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding: 40px;
+      background-color: #f4f6f8;
+    }
+
+    .container {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      width: 350px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    input, select, button {
+      margin: 10px;
+      padding: 10px;
+      width: 90%;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .bar-container {
+      width: 100%;
+      background: #ddd;
+      height: 20px;
+      margin-top: 15px;
+      border-radius: 5px;
+    }
+
+    #riskBar {
+      height: 20px;
+      width: 0%;
+      background: red;
+      border-radius: 5px;
+      transition: width 0.5s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>💳 Fraud Detection System</h2>
+
+  <input type="number" id="amount" placeholder="Transaction Amount"><br>
+
+  <select id="location">
+    <option value="domestic">Domestic</option>
+    <option value="international">International</option>
+  </select><br>
+
+  <input type="number" id="time" placeholder="Transaction Time"><br>
+  <input type="number" id="cardAge" placeholder="Card Age (months)"><br>
+
+  <button onclick="checkFraud()">Check Transaction</button>
+
+  <div id="result"></div>
+
+  <div class="bar-container">
+    <div id="riskBar"></div>
+  </div>
+</div>
+
+<script>
+function checkFraud() {
+  let amount = parseFloat(document.getElementById("amount").value);
+  let location = document.getElementById("location").value;
+  let time = parseInt(document.getElementById("time").value);
+  let cardAge = parseInt(document.getElementById("cardAge").value);
+
+  let result = "";
+  let riskText = "";
+  let riskValue = 0;
+
+  // Fraud logic
+  if (
+    amount > 1000 ||
+    (location === "international" && amount > 500) ||
+    (time > 80000 && amount > 300) ||
+    (cardAge < 2 && amount > 200)
+  ) {
+    result = "⚠️ Fraud Detected";
+    riskText = "High Risk Transaction";
+    riskValue = 100;
+
+    alert("⚠️ Warning! This transaction looks fraudulent!");
+  } 
+  else if (amount > 500) {
+    result = "⚠️ Suspicious Transaction";
+    riskText = "Medium Risk";
+    riskValue = 60;
+  } 
+  else {
+    result = "✅ Safe Transaction";
+    riskText = "Low Risk";
+    riskValue = 20;
+  }
+
+  document.getElementById("result").innerHTML = result + "<br>" + riskText;
+  document.getElementById("riskBar").style.width = riskValue + "%";
+}
+</script>
+
+</body>
+</html>
